@@ -11,6 +11,7 @@ Classify.py – classify image in the classify folder
 Train.py – train model to recognize faces from the train folder
 Train Folder – name of each folder is the name of the user which will hold photos of that user
 .npz file – stores the face arrays and embeddings of the training images
+facenet - pre-made models for face detection
 
 Instructions when trying to classify new faces:
 1.	Create new folder in train with your name and photos of that person
