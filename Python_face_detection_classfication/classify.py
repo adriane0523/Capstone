@@ -67,4 +67,4 @@ def classify(file_name):
     pyplot.show()
 
 if __name__ == "__main__":
-    classify('classify/5.jpg')
+    classify('classify/7.jpg')
