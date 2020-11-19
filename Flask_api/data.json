@@ -1,0 +1,8 @@
+{
+    "data":[{"name":"adriane_inocencio", "relation": "CSE 424", "description": "Programmer for Capstone who worked on end to end integration"},
+        {"name":"Jason_Kwon", "relation": "CSE 424", "description": "Programmer for Capstone who worked on face classfication"},
+        {"name":"Kyle_Gonzalez", "relation": "CSE 424", "description": "Programmer for Capstone who worked on face detection"}
+        
+    ]
+    
+}

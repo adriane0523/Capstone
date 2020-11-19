@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < fileUris.size(); i++){
             Log.d("uploadFiles", "Uploading file" + fileUris.get(i));
-            parts.add(prepareFilePart("" + i, fileUris.get(i)));
+            parts.add(prepareFilePart("image" , fileUris.get(i)));
         }
 
         ArrayList<String> stringList = new ArrayList<>();
