@@ -17,6 +17,10 @@ def handle_request():
     print("Successful Connection")
     return "Successful Connection"
 
+@app.route("/test")
+def hello():
+    return "<h1 style='color:blue'>Hello There!</h1>"
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
