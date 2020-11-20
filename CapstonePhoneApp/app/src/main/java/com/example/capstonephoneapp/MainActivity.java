@@ -28,11 +28,14 @@ import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -47,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST = 100;
     private int PICK_IMAGE_FROM_GALLERY_REQUEST = 1;
     private TextView tvClassifyResult;
-    int status;
+    private TextView tvDescription;
 
     List<MultipartBody.Part> parts = new ArrayList<>();
 
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         tvClassifyResult = findViewById(R.id.tvClassifyResult);
+        tvDescription = findViewById(R.id.tvDescription);
 
         // Open image storage gallery upon pressing button
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -75,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                 startActivityForResult(
                         Intent.createChooser(intent, "Select picture"),
                         PICK_IMAGE_FROM_GALLERY_REQUEST);
@@ -88,14 +91,19 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == PICK_IMAGE_FROM_GALLERY_REQUEST && resultCode == RESULT_OK && data != null){
             ClipData clipData = data.getClipData();
-            Log.d("MAIN", (clipData == null) + "");
             ArrayList<Uri> fileUris = new ArrayList<Uri>();
-            for(int i = 0; i < clipData.getItemCount(); i++){
-                ClipData.Item item = clipData.getItemAt(i);
-                Uri uri = item.getUri();
+            if(clipData == null){
+                Uri uri = data.getData();
                 fileUris.add(uri);
             }
             uploadFiles(fileUris);
+//            Log.d("MAIN", (clipData == null) + "");
+//            for(int i = 0; i < clipData.getItemCount(); i++){
+//                ClipData.Item item = clipData.getItemAt(i);
+//                Uri uri = item.getUri();
+//                fileUris.add(uri);
+//            }
+//            uploadFiles(fileUris);
         }
     }
 
@@ -138,10 +146,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void uploadFiles(List<Uri> fileUris){
-        // URL goes here, Flask localhost is at http://10.0.2.2:5000/
+        // HttpClient to set connect, write, and read timeouts
         Log.d("uploadFiles", "Files uploading");
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .build();
+
+        // URL goes here, Flask localhost is at http://10.0.2.2:5000/
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5000/")
+                .baseUrl("http://206.189.213.242:5000/")
+                .client(okHttpClient)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create());
 
@@ -152,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < fileUris.size(); i++){
             Log.d("uploadFiles", "Uploading file" + fileUris.get(i));
-            parts.add(prepareFilePart("image" , fileUris.get(i)));
+            parts.add(prepareFilePart("image", fileUris.get(i)));
         }
 
         // Response handler from the server, returns a String detailing results of the classification API
@@ -168,15 +184,23 @@ public class MainActivity extends AppCompatActivity {
                             try{
                                 JSONObject classificationResult = new JSONObject(responseData);
                                 Log.d("JSONResponse", classificationResult.toString());
-                                String classifyName = classificationResult.getString("result");
-                                tvClassifyResult.setText(classifyName);
+                                String classifyName = classificationResult.getString("name");
+                                double classifyProb = classificationResult.getDouble("probability");
+                                String classifyRelation = classificationResult.getString("relation");
+                                String description = classificationResult.getString("description");
+                                tvClassifyResult.setText(classifyName + ": " + classifyProb);
+                                tvDescription.setText(classifyRelation + ", " + description);
+                                for(int i = 0; i < parts.size(); i++){
+                                    Log.d("Parts List", parts.get(i).toString());
+                                }
+                                parts.clear();
                             }catch(JSONException e){}
                         } catch (IOException e) { e.printStackTrace(); }
                     }else{
                         Log.d("onEmptyResponse", "Returned Empty Response");
                     }
                 }
-                Log.d("onResponse", response.body().toString());
+//                Log.d("onResponse", response.body().toString());
             }
 
             @Override
