@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         // URL goes here, Flask localhost is at http://10.0.2.2:5000/
         Log.d("uploadFiles", "Files uploading");
         Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://10.0.2.2:5000/")
+                .baseUrl("http://206.189.213.242:5000/")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create());
 
@@ -170,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
                                 Log.d("JSONResponse", classificationResult.toString());
                                 String classifyName = classificationResult.getString("result");
                                 tvClassifyResult.setText(classifyName);
+                                parts.clear();
                             }catch(JSONException e){}
                         } catch (IOException e) { e.printStackTrace(); }
                     }else{
