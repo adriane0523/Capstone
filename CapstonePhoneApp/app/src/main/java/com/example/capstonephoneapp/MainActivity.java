@@ -184,8 +184,6 @@ public class MainActivity extends AppCompatActivity {
                             try{
                                 JSONObject classificationResult = new JSONObject(responseData);
                                 Log.d("JSONResponse", classificationResult.toString());
-                                String classifyName = classificationResult.getString("result");
-                                tvClassifyResult.setText(classifyName);
 
                                 String classifyName = classificationResult.getString("name");
                                 double classifyProb = classificationResult.getDouble("probability");
