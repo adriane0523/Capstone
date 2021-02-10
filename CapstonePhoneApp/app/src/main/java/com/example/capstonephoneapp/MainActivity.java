@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
                             try{
                                 JSONObject classificationResult = new JSONObject(responseData);
                                 Log.d("JSONResponse", classificationResult.toString());
+
                                 String classifyName = classificationResult.getString("name");
                                 double classifyProb = classificationResult.getDouble("probability");
                                 String classifyRelation = classificationResult.getString("relation");
@@ -199,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                                 for(int i = 0; i < parts.size(); i++){
                                     Log.d("Parts List", parts.get(i).toString());
                                 }
+
                                 parts.clear();
                             }catch(JSONException e){}
                         } catch (IOException e) { e.printStackTrace(); }

@@ -10,6 +10,7 @@ from matplotlib import pyplot
 from train import *
 
 
+
 def classify(file_name):
 
     # load training date and their face embeddings
@@ -64,3 +65,4 @@ def classify(file_name):
 
 
 
+classify('./classify/20190104_105247.jpg')

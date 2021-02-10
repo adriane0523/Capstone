@@ -1,0 +1,48 @@
+[1mdiff --cc CapstonePhoneApp/app/src/main/java/com/example/capstonephoneapp/MainActivity.java[m
+[1mindex 1da7809,81d0258..0000000[m
+[1m--- a/CapstonePhoneApp/app/src/main/java/com/example/capstonephoneapp/MainActivity.java[m
+[1m+++ b/CapstonePhoneApp/app/src/main/java/com/example/capstonephoneapp/MainActivity.java[m
+[36m@@@ -138,10 -146,18 +146,21 @@@[m [mpublic class MainActivity extends AppCo[m
+  [m
+  [m
+      private void uploadFiles(List<Uri> fileUris){[m
+[31m-         // URL goes here, Flask localhost is at http://10.0.2.2:5000/[m
+[32m+         // HttpClient to set connect, write, and read timeouts[m
+          Log.d("uploadFiles", "Files uploading");[m
+[32m+         OkHttpClient okHttpClient = new OkHttpClient.Builder()[m
+[32m+                 .connectTimeout(60, TimeUnit.SECONDS)[m
+[32m+                 .writeTimeout(60, TimeUnit.SECONDS)[m
+[32m+                 .readTimeout(60, TimeUnit.SECONDS)[m
+[32m+                 .build();[m
+[32m+ [m
+[32m+         // URL goes here, Flask localhost is at http://10.0.2.2:5000/[m
+          Retrofit.Builder builder = new Retrofit.Builder()[m
+                  .baseUrl("http://206.189.213.242:5000/")[m
+[32m++<<<<<<< HEAD[m
+[32m++=======[m
+[32m+                 .client(okHttpClient)[m
+[32m++>>>>>>> 47acd83ede7adc0447cd2a833d38f8b5a0f9b2c8[m
+                  .addConverterFactory(ScalarsConverterFactory.create())[m
+                  .addConverterFactory(GsonConverterFactory.create());[m
+  [m
+[36m@@@ -168,8 -184,15 +187,20 @@@[m
+                              try{[m
+                                  JSONObject classificationResult = new JSONObject(responseData);[m
+                                  Log.d("JSONResponse", classificationResult.toString());[m
+[32m++<<<<<<< HEAD[m
+[32m +                                String classifyName = classificationResult.getString("result");[m
+[32m +                                tvClassifyResult.setText(classifyName);[m
+[32m++=======[m
+[32m+                                 String classifyName = classificationResult.getString("name");[m
+[32m+                                 double classifyProb = classificationResult.getDouble("probability");[m
+[32m+                                 String classifyRelation = classificationResult.getString("relation");[m
+[32m+                                 String description = classificationResult.getString("description");[m
+[32m+                                 tvClassifyResult.setText(classifyName + ": " + classifyProb);[m
+[32m+                                 tvDescription.setText(classifyRelation + ", " + description);[m
+[32m+                                 for(int i = 0; i < parts.size(); i++){[m
+[32m+                                     Log.d("Parts List", parts.get(i).toString());[m
+[32m+                                 }[m
+[32m++>>>>>>> 47acd83ede7adc0447cd2a833d38f8b5a0f9b2c8[m
+                                  parts.clear();[m
+                              }catch(JSONException e){}[m
+                          } catch (IOException e) { e.printStackTrace(); }[m
