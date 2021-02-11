@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "33743426822",
+    "project_id": "capstonephoneapp",
+    "storage_bucket": "capstonephoneapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33743426822:android:daf5a4992bb1df1ee9ba87",
+        "android_client_info": {
+          "package_name": "com.example.capstonephoneapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33743426822-ss4pb7cd08v8polvlf6dedh3ru47vvpp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.capstonephoneapp",
+            "certificate_hash": "4e9757f6b50c86d0d62e07d83f91ef20b87331eb"
+          }
+        },
+        {
+          "client_id": "33743426822-fb1tkeikvg2moa6l0554k6ob0fj1dlug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrLMMM0VlKJ2tyJTlCs0dSbSBGVgtqEJM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33743426822-fb1tkeikvg2moa6l0554k6ob0fj1dlug.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
