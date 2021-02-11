@@ -12,7 +12,6 @@ from train import *
 
 
 def classify(file_name):
-
     # load training date and their face embeddings
     data = load('5-celebrity-faces-embeddings.npz')
     trainX, trainy = data['arr_0'], data['arr_1']
@@ -62,7 +61,3 @@ def classify(file_name):
     print('Predicted: %s (%.3f)' % (predict_names[0], class_probability))
 
     return [predict_names[0], class_probability]
-
-
-
-classify('./classify/20190104_105247.jpg')

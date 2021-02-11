@@ -25,8 +25,11 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+
+
 @app.route('/upload', methods=['POST'])
-def upload_file():
+def upload():
+    file_path = './photos/'
     imageFile = request.files["image"]
     print(imageFile)
     # if user does not select file, browser also
@@ -37,9 +40,20 @@ def upload_file():
         return redirect(request.url)
     if imageFile and allowed_file(imageFile.filename):
         filename = secure_filename(imageFile.filename)
-        imageFile.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
- 
-    name = classify('classify/' + filename)
+        imageFile.save(os.path.join(file_path, filename))
+        if(detect_face(file_path + filename)):
+            classify_picture(filename)
+            return "Good face"
+        else:
+            os.remove(file_path + filename)
+            return "bad face"
+
+    return "Sucessfully uploaded"
+
+
+
+def classify_picture(filename):
+    name = classify('photos/' + filename)
 
     data = {}
     relation = ""

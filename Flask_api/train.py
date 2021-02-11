@@ -18,6 +18,25 @@ from sklearn.preprocessing import Normalizer
 from sklearn.svm import SVC
 
  
+
+def detect_face(filename, required_size=(160, 160)):
+	# load image from file
+	image = Image.open(filename)
+	# convert to RGB, if needed
+	image = image.convert('RGB')
+	# convert to array
+	pixels = asarray(image)
+	# create the detector, using default weights
+	detector = MTCNN()
+	# detect faces in the image
+	results = detector.detect_faces(pixels)
+
+	if(len(results) > 0):
+		return True
+	else:
+		return False
+
+
 # extract a single face from a given photograph
 def extract_face(filename, required_size=(160, 160)):
 	# load image from file
@@ -33,6 +52,7 @@ def extract_face(filename, required_size=(160, 160)):
 	# extract the bounding box from the first face
 	#flag = []
 	#if len(results) > 0:
+	print(results)
 	x1, y1, width, height = results[0]['box']
 	# bug fix
 	x1, y1 = abs(x1), abs(y1)
