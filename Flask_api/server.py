@@ -4,16 +4,19 @@ from werkzeug.utils import secure_filename
 import os
 from classify import *
 import json
-
+from firebase import firebase
+import datetime
+  
 UPLOAD_FOLDER = 'classify'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = flask.Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
+file_path = './static/'
+firebase = firebase.FirebaseApplication('https://capstonephoneapp-default-rtdb.firebaseio.com/', None)
 
 @app.route('/', methods=['GET', 'POST'])
-def handle_request():
+def index():
     print("Successful Connection")
     return "Successful Connection"
 
@@ -25,11 +28,9 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
-
 @app.route('/upload', methods=['POST'])
 def upload():
-    file_path = './photos/'
+  
     imageFile = request.files["image"]
     print(imageFile)
     # if user does not select file, browser also
@@ -53,7 +54,7 @@ def upload():
 
 
 def classify_picture(filename):
-    name = classify('photos/' + filename)
+    name = classify(file_path + filename)
 
     data = {}
     relation = ""
@@ -66,13 +67,23 @@ def classify_picture(filename):
         if i["name"] == name[0]:
             relation = i["relation"]
             description = i["description"]
-    result = {
+
+    #check how many
+    result = firebase.get('/log/', '')
+    if (len(result) > 5):
+        for i in result:
+            firebase.delete('/log/', i)
+    #put it into the database
+    data = {
         "name": name[0],
         "probability":name[1],
         "relation": relation,
-        "description": description
+        "description": description,
+        "picture": filename,
+        "timestamp": datetime.datetime.now() 
     }
 
+    result = firebase.post('/log/',data)
     print(result)
 
     return result
