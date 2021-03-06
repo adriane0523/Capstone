@@ -1,12 +1,13 @@
 import flask
-from flask import Flask, flash, request, redirect, url_for
+from flask import Flask, flash, request, redirect, url_for, render_template, Response
 from werkzeug.utils import secure_filename
 import os
 from classify import *
 import json
 from firebase import firebase
 import datetime
-  
+import cv2
+
 UPLOAD_FOLDER = 'classify'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = flask.Flask(__name__)
@@ -15,12 +16,32 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 file_path = './static/'
 firebase = firebase.FirebaseApplication('https://capstonephoneapp-default-rtdb.firebaseio.com/', None)
 
+camera = cv2.VideoCapture(0)
+'''
+for ip camera use - rtsp://username:password@ip_address:554/user=username_password='password'_channel=channel_number_stream=0.sdp' 
+for local webcam use cv2.VideoCapture(0)
+'''
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+def gen_frames():  
+    while True:
+        success, frame = camera.read()  # read the camera frame
+        if not success:
+            break
+        else:
+            ret, buffer = cv2.imencode('.jpg', frame)
+            #cv2.imwrite('c1.jpg',frame)
+            frame = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    print("Successful Connection")
-    return "Successful Connection"
+    return render_template('index.html')
 
-@app.route("/test")
+@app.route("/classify")
 def hello():
     return "<h1 style='color:blue'>Hello There!</h1>"
 
