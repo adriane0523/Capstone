@@ -110,6 +110,6 @@ def classify_picture(filename):
     return result
 
 
-app.run(host="0.0.0.0", port=5000, debug=True, threaded=True)
+app.run(host="localhost", port=5000, debug=True, threaded=True)
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
