@@ -48,5 +48,5 @@ def classify_picture(filename):
     print(name[0])
 
 while(True):
-    time.sleep(2)
+    time.sleep(1)
     start_classfication('./photos/img.png')

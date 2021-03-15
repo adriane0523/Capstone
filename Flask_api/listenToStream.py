@@ -18,7 +18,7 @@ if(r.status_code == 200):
             i = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
             print("writiting")
             cv2.imwrite('./photos/img.png',i)
-            time.sleep(5)
+            time.sleep(1)
             #cv2.imshow('i', i)
             
     else:
