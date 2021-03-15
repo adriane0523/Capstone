@@ -12,24 +12,6 @@ import shutil
 
 #r = requests.get('http://98.171.4.142:8000/stream.mjpg', stream=True)
 
-<<<<<<< HEAD
-r = requests.get('http://127.0.0.1:5000/video_feed', stream=True)
-
-if(r.status_code == 200):
-    bytes = bytes()
-    for chunk in r.iter_content(chunk_size=1024):
-        bytes += chunk
-        a = bytes.find(b'\xff\xd8')
-        b = bytes.find(b'\xff\xd9')
-        if a != -1 and b != -1:
-            jpg = bytes[a:b+2]
-            bytes = bytes[b+2:]
-            i = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
-            print("writiting")
-            cv2.imwrite('./photos/img.png',i)
-            time.sleep(1)
-            #cv2.imshow('i', i)
-=======
 
 UPLOAD_FOLDER = 'classify'
 FILE_PATH = './photos/classify'
@@ -103,7 +85,6 @@ if __name__ == "__main__":
           if time.time() > T_END:
             th.join()
             exit(0)
->>>>>>> 39a16c3fece2309e597ac467511fe72109b4adb4
             
       
   else:
