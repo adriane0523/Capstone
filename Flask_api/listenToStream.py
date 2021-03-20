@@ -9,23 +9,17 @@ import json
 import datetime
 from werkzeug.utils import secure_filename
 import shutil
-<<<<<<< HEAD
 from firebase import firebase
 from datetime import datetime
-=======
 import sqlite3
->>>>>>> 468973be2f4172d4ec3a5ec277db225c139e9caf
 
 #r = requests.get('http://98.171.4.142:8000/stream.mjpg', stream=True)
 
 
 UPLOAD_FOLDER = 'classify'
 FILE_PATH = './photos/classify'
-<<<<<<< HEAD
 firebase = firebase.FirebaseApplication('https://capstonephoneapp-default-rtdb.firebaseio.com/', None)
-=======
 DB_PATH = './db/database.db'
->>>>>>> 468973be2f4172d4ec3a5ec277db225c139e9caf
 
 def start_classification(killtime, filename='./photos/img.png'):
     # if user does not select file, browser also
@@ -71,7 +65,6 @@ def classify_picture(filename):
     else: 
       print("No student with id exists")
 
-<<<<<<< HEAD
     data = {
         "name": name[0],
         "probability":name[1],
@@ -86,9 +79,7 @@ def classify_picture(filename):
 
 
 if __name__ == "__main__":
-=======
 def listen():
->>>>>>> 468973be2f4172d4ec3a5ec277db225c139e9caf
   r = requests.get('http://127.0.0.1:5000/video_feed', stream=True)
   T_END = time.time() + 10 
   th = threading.Thread(target = start_classification, args = (T_END,))
