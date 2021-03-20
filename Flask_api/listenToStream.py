@@ -9,12 +9,15 @@ import json
 import datetime
 from werkzeug.utils import secure_filename
 import shutil
+from firebase import firebase
+from datetime import datetime
 
 #r = requests.get('http://98.171.4.142:8000/stream.mjpg', stream=True)
 
 
 UPLOAD_FOLDER = 'classify'
 FILE_PATH = './photos/classify'
+firebase = firebase.FirebaseApplication('https://capstonephoneapp-default-rtdb.firebaseio.com/', None)
 
 def start_classification(killtime, filename='./photos/img.png'):
     # if user does not select file, browser also
@@ -48,8 +51,10 @@ def classify_picture(filename):
         "relation": relation,
         "description": description,
         "picture": filename,
-        "timestamp": datetime.datetime.now() 
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     }
+
+    result = firebase.post('/log/',data)
     print(name[0])
 
 
