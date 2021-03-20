@@ -51,7 +51,7 @@ def allowed_file(filename):
 
 @app.route('/upload', methods=['POST'])
 def upload():
-  
+
     imageFile = request.files["image"]
     print(imageFile)
     # if user does not select file, browser also

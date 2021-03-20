@@ -1,10 +1,40 @@
 {
   "project_info": {
     "project_number": "33743426822",
+    "firebase_url": "https://capstonephoneapp-default-rtdb.firebaseio.com",
     "project_id": "capstonephoneapp",
     "storage_bucket": "capstonephoneapp.appspot.com"
   },
   "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33743426822:android:8cca7354609e4195e9ba87",
+        "android_client_info": {
+          "package_name": "com.example.capstonephoneapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33743426822-fb1tkeikvg2moa6l0554k6ob0fj1dlug.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrLMMM0VlKJ2tyJTlCs0dSbSBGVgtqEJM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33743426822-fb1tkeikvg2moa6l0554k6ob0fj1dlug.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
     {
       "client_info": {
         "mobilesdk_app_id": "1:33743426822:android:daf5a4992bb1df1ee9ba87",
