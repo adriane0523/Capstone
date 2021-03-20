@@ -7,6 +7,9 @@ import json
 from firebase import firebase
 import datetime
 import cv2
+from listenToStream import *
+
+
 
 UPLOAD_FOLDER = 'classify'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
@@ -41,9 +44,6 @@ def gen_frames():
 def index():
     return render_template('index.html')
 
-@app.route("/classify")
-def hello():
-    return "<h1 style='color:blue'>Hello There!</h1>"
 
 def allowed_file(filename):
     return '.' in filename and \
@@ -108,6 +108,11 @@ def classify_picture(filename):
     print(result)
 
     return result
+
+@app.route('/classify', methods=['GET'])
+def classify_from_stream():
+  listen()
+
 
 
 app.run(host="localhost", port=5000, debug=True, threaded=True)
