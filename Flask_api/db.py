@@ -7,7 +7,7 @@ def createTable(pathToDB, tableName):
   if cur.fetchone():
     throwError(500, 'Table %s Already Exists' % (tableName))
     return
-  cur.execute('CREATE TABLE Students (asuID INT NOT NULL PRIMARY KEY UNIQUE, given_name VARCHAR(50), family_name VARCHAR(50), grade VARCHAR(2))')
+  cur.execute('CREATE TABLE Students (asuID INT NOT NULL PRIMARY KEY UNIQUE, given_name VARCHAR(50), family_name VARCHAR(50))')
 
 def createAllTables(pathToDB):   
   con = sqlite3.connect('%s' % (pathToDB))
@@ -16,7 +16,7 @@ def createAllTables(pathToDB):
   if cur.fetchone():
     throwError(500, 'Table Students Already Exists')
   else:
-    cur.execute('CREATE TABLE Students (id INTEGER(10) NOT NULL PRIMARY KEY UNIQUE, given_name VARCHAR(50), family_name VARCHAR(50), grade VARCHAR(2))')
+    cur.execute('CREATE TABLE Students (id INTEGER(10) NOT NULL PRIMARY KEY UNIQUE, given_name VARCHAR(50), family_name VARCHAR(50))')
   
   cur.execute("""SELECT name FROM sqlite_master WHERE type='table' AND name='Instructors';""")
   if cur.fetchone():
@@ -43,16 +43,16 @@ def dbInsert(dbpath):
   cur = con.cursor()
   #INSERT STUDENTS
   cur.execute(""" DELETE FROM Students """)
-  cur.execute(""" INSERT INTO Students (id, given_name, family_name, grade) 
+  cur.execute(""" INSERT INTO Students (id, given_name, family_name) 
                     VALUES
-                    (1234567890, 'Adriane', 'Inocencio', 'A+'),
-                    (1234567891, 'Ben', 'Afflek', 'B0'),
-                    (1234567892, 'Elton', 'John', 'C0'),
-                    (1234567893, 'Jason', 'Kwon', 'A+'),
-                    (1234567894, 'Jerry', 'Seinfeld', 'B-'),
-                    (1234567895, 'Kyle', 'Gonzalez', 'A+'),
-                    (1234567896, 'Madonna', '', 'F'),
-                    (1234567897, 'Mindy', 'Kaling', 'A-');
+                    (1234567890, 'Adriane', 'Inocencio'),
+                    (1234567891, 'Ben', 'Afflek'),
+                    (1234567892, 'Elton', 'John'),
+                    (1234567893, 'Jason', 'Kwon'),
+                    (1234567894, 'Jerry', 'Seinfeld'),
+                    (1234567895, 'Kyle', 'Gonzalez'),
+                    (1234567896, 'Madonna', ''),
+                    (1234567897, 'Mindy', 'Kaling');
                   """)
   #INSERT INSTRUCTORS
   cur.execute(""" DELETE FROM Instructors """)
@@ -79,8 +79,18 @@ def dbInsert(dbpath):
                     (1234567890, 2, 'A+'),
                     (1234567891, 1, 'B+'),
                     (1234567891, 2, 'C-'),
-                    (1234567892, 1, 'S+'),
-                    (1234567893, 1, 'B+')""")
+                    (1234567892, 1, 'A0'),
+                    (1234567893, 1, 'B+'),
+                    (1234567893, 1, 'A0'),
+                    (1234567894, 1, 'B0'),
+                    (1234567894, 1, 'C+'),
+                    (1234567895, 1, 'A-'),
+                    (1234567896, 1, 'B-'),
+                    (1234567896, 1, 'B0'),
+                    (1234567897, 1, 'A+'),
+                    (1234567897, 1, 'A0')
+                    """)
+
 
   con.commit()
 
@@ -106,6 +116,13 @@ def dropAllTables(dbpath, tableList):
   for table in tableList:
     dropquery = """DROP TABLE %s""" % (table)
     cur.execute(dropquery)
+
+def testQuery(dbpath):
+  con = sqlite3.connect(dbpath)
+  cur = con.cursor()
+  cur.execute("""SELECT st.given_name, st.family_name, grade FROM Students AS st, (SELECT student_id, grade FROM Students_To_Courses WHERE course_id IN 
+                      (SELECT course_id FROM Courses WHERE instructorID=1123456780) AND course_id=1) AS stc WHERE id=1234567890 AND stc.student_id=st.id""")
+  print(cur.fetchall())
 def throwError(errorCode, reason):
   print('Error (%d): %s' % (errorCode, reason))
 
@@ -116,3 +133,4 @@ if __name__ == "__main__":
   createAllTables(dbpath)
   dbInsert(dbpath)
   printTables(dbpath)
+  testQuery(dbpath)

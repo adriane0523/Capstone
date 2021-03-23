@@ -4,7 +4,6 @@ from werkzeug.utils import secure_filename
 import os
 from classify import *
 import json
-from firebase import firebase
 import datetime
 import cv2
 from listenToStream import *
@@ -17,7 +16,7 @@ app = flask.Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 file_path = './static/'
-firebase = firebase.FirebaseApplication('https://capstonephoneapp-default-rtdb.firebaseio.com/', None)
+# firebase = firebase.FirebaseApplication('https://capstonephoneapp-default-rtdb.firebaseio.com/', None)
 
 camera = cv2.VideoCapture(0)
 '''
@@ -108,7 +107,9 @@ def classify_picture(filename):
     print(result)
 
     return result
-
+#
+# listen for now has hardcoded instructor_id and course_id. Pass real user input as function arguments
+#
 @app.route('/classify', methods=['GET'])
 def classify_from_stream():
   listen()

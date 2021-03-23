@@ -6,31 +6,42 @@ import time
 import threading
 from classify import *
 import json
+from firebase import Firebase
 import datetime
 from werkzeug.utils import secure_filename
 import shutil
 import sqlite3
 
-#r = requests.get('http://98.171.4.142:8000/stream.mjpg', stream=True)
+#pip install pycryptodome
+#https://pypi.org/project/firebase/
 
+fbconfig = {
+  "databaseURL": "https://capstonephoneapp-default-rtdb.firebaseio.com/",
+  "apiKey": "AAAAB9tD1QY:APA91bFoyAq5bkZ1W0jp5c-rb0CEuOUGXS2jmNxp0TNi5REyb2T9WJh_lnY-nfKNLQAew7kwKL5wnD9lr_LB9g5h5kJ6fkUmsASmZsLx3mhAENcxasL1L-hRG0l5la6p5kh2fYIicGk-",
+  "authDomain": "",
+  "storageBucket": ""
+}
+
+firebase = Firebase(fbconfig)
+#r = requests.get('http://98.171.4.142:8000/stream.mjpg', stream=True)
 
 UPLOAD_FOLDER = 'classify'
 FILE_PATH = './photos/classify'
 DB_PATH = './db/database.db'
 
-def start_classification(killtime, filename='./photos/img.png'):
+def start_classification(killtime, instructor_id, course_id, filename='./photos/img.png'):
     # if user does not select file, browser also
     # submit a empty part without filename
     while(time.time() < killtime + 3):   
       if(detect_face(filename)):
           shutil.copyfile((filename), (FILE_PATH+'/img.png'))
-          classify_picture(filename)
+          classify_picture(filename, instructor_id, course_id)
       else:
           print("No Face detected")
       time.sleep(2)
 
 
-def classify_picture(filename):
+def classify_picture(filename, instructor_id, course_id):
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
     result = classify(FILE_PATH + '/img.png')
@@ -46,26 +57,37 @@ def classify_picture(filename):
             relation = i["relation"]
             description = i["description"]
     print(result[0])
-    cur.execute("SELECT * FROM Students WHERE id=%d" % int(result[0]))
+    cur.execute("""SELECT st.given_name, st.family_name, grade FROM Students AS st, (SELECT student_id, grade FROM Students_To_Courses WHERE course_id IN 
+                      (SELECT course_id FROM Courses WHERE instructorID=%d) AND course_id=%d) AS stc WHERE id=%d AND stc.student_id=st.id""" % (int(instructor_id), int(course_id), int(result[0])))
+                      
     row = cur.fetchone()
     if row:
       data = {
-          "name": row[1] + ' ' + row[2],
-          "grade": row[3],
+          "name": row[0] + ' ' + row[1],
+          "grade": row[2],
           "probability":result[1],
           "relation": relation,
           "description": description,
           "picture": filename,
           "timestamp": datetime.datetime.now() 
       }
+      result = firebase.database().child('log').push(json.dumps(data, default=json_default))
       print(data)
     else: 
       print("No student with id exists")
 
-def listen():
+def json_default(obj):
+    if isinstance(obj, datetime.datetime):
+        return obj.strftime('%Y-%m-%d %H:%M:%S')
+  
+
+# 
+# Remove hardcoded instructor id and course id, and pass real user input as arguments
+# 
+def listen(instructor_id=1123456780, course_id=1):
   r = requests.get('http://127.0.0.1:5000/video_feed', stream=True)
   T_END = time.time() + 10 
-  th = threading.Thread(target = start_classification, args = (T_END,))
+  th = threading.Thread(target = start_classification, args = (T_END, instructor_id, course_id))
  
   if(r.status_code == 200):
       byte = bytes()
