@@ -65,18 +65,18 @@ def classify_picture(filename, instructor_id, course_id):
       data = {
           "name": row[0] + ' ' + row[1],
           "grade": row[2],
-          "probability":result[1],
+          "probability": result[1],
           "relation": relation,
           "description": description,
           "picture": filename,
-          "timestamp": datetime.datetime.now() 
+          "timestamp": stringify_date(datetime.datetime.now())
       }
-      result = firebase.database().child('log').push(json.dumps(data, default=json_default))
+      result = firebase.database().child('log').push(data)
       print(data)
     else: 
       print("No student with id exists")
 
-def json_default(obj):
+def stringify_date(obj):
     if isinstance(obj, datetime.datetime):
         return obj.strftime('%Y-%m-%d %H:%M:%S')
   
