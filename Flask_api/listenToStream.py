@@ -11,8 +11,9 @@ import datetime
 from werkzeug.utils import secure_filename
 import shutil
 from firebase import firebase
-from datetime import datetime
+import datetime
 import sqlite3
+
 
 #pip install pycryptodome
 #https://pypi.org/project/firebase/
@@ -29,7 +30,6 @@ firebase = Firebase(fbconfig)
 
 UPLOAD_FOLDER = 'classify'
 FILE_PATH = './photos/classify'
-firebase = firebase.FirebaseApplication('https://capstonephoneapp-default-rtdb.firebaseio.com/', None)
 DB_PATH = './db/database.db'
 
 def start_classification(killtime, instructor_id, course_id, filename='./photos/img.png'):

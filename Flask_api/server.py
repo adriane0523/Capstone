@@ -7,7 +7,8 @@ import json
 import datetime
 import cv2
 from listenToStream import *
-
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 
 UPLOAD_FOLDER = 'classify'
@@ -16,6 +17,11 @@ app = flask.Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 file_path = './static/'
+limiter = Limiter(
+    app,
+    key_func=get_remote_address,
+    default_limits=["5000 per day", "100 per hour"]
+)
 # firebase = firebase.FirebaseApplication('https://capstonephoneapp-default-rtdb.firebaseio.com/', None)
 
 camera = cv2.VideoCapture(0)
@@ -111,6 +117,7 @@ def classify_picture(filename):
 # listen for now has hardcoded instructor_id and course_id. Pass real user input as function arguments
 #
 @app.route('/classify', methods=['GET'])
+@limiter.limit("0.2/second", override_defaults=True)
 def classify_from_stream():
   listen()
 
