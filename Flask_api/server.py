@@ -100,7 +100,7 @@ def classify_picture(filename):
         "relation": relation,
         "description": description,
         "picture": filename,
-        "timestamp": datetime.datetime.now() 
+        "timestamp": datetime.now() 
     }
 
     result = firebase.post('/log/',data)
