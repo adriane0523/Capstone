@@ -2,7 +2,15 @@ package com.example.capstonephoneapp;
 
 import java.util.Date;
 
-public class LogItem {
+public class LogItem implements Comparable<LogItem>{
+
+    String description = "";
+    String name = "";
+    String pictureURL = "";
+    double probability = 0.0;
+    String relation = "";
+    Date timestamp = null;
+
     public String getDescription() {
         return description;
     }
@@ -51,13 +59,6 @@ public class LogItem {
         this.timestamp = timestamp;
     }
 
-    String description = "";
-    String name = "";
-    String pictureURL = "";
-    double probability = 0.0;
-    String relation = "";
-    Date timestamp = null;
-
     public LogItem(String description, String name, String pictureURL, double probability,
                    String relation, Date timestamp){
         this.description = description;
@@ -69,7 +70,11 @@ public class LogItem {
     }
 
 
-
-
-
+    @Override
+    public int compareTo(LogItem logItem) {
+        if(getTimestamp() == null || logItem.getTimestamp() == null){
+            return 0;
+        }
+        return getTimestamp().compareTo(logItem.getTimestamp());
+    }
 }

@@ -25,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class ConsoleLogActivity extends AppCompatActivity {
@@ -72,6 +74,7 @@ public class ConsoleLogActivity extends AppCompatActivity {
                     LogItem logItem = new LogItem(description, name, picture, probability, relation, convertedDate);
 
                     log.add(logItem);
+                    Collections.sort(log, Collections.<LogItem>reverseOrder());
                     mLogAdapter.notifyDataSetChanged();
                 }
             }
