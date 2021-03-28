@@ -13,6 +13,8 @@ import shutil
 from firebase import firebase
 import datetime
 import sqlite3
+import numpy as np
+from PIL import Image as im
 
 
 #pip install pycryptodome
@@ -31,8 +33,12 @@ firebase = Firebase(fbconfig)
 UPLOAD_FOLDER = 'classify'
 FILE_PATH = './photos/classify'
 DB_PATH = './db/database.db'
+index = 0
 
 def start_classification(killtime, instructor_id, course_id, filename='./photos/img.png'):
+    global index
+
+
     # if user does not select file, browser also
     # submit a empty part without filename
     while(time.time() < killtime + 3):   
@@ -41,43 +47,59 @@ def start_classification(killtime, instructor_id, course_id, filename='./photos/
           classify_picture(filename, instructor_id, course_id)
       else:
           print("No Face detected")
-      time.sleep(2)
+      time.sleep(1)
 
 
 def classify_picture(filename, instructor_id, course_id):
-    con = sqlite3.connect(DB_PATH)
-    cur = con.cursor()
-    result = classify(FILE_PATH + '/img.png')
-    data = {}
-    relation = ""
-    description = ""
-    with open('data.json') as f:
-        data = json.load(f)
+  global index
 
-    for i in data["data"]:
+  index = len(firebase.database().child('log').get().val())-1
+  if(detect_face(filename)):
+      con = sqlite3.connect(DB_PATH)
+      cur = con.cursor()
+      result = classify(FILE_PATH + '/img.png')
+      data = {}
+      relation = ""
+      description = ""
+      with open('data.json') as f:
+          data = json.load(f)
 
-        if i["name"] == result[0]:
-            relation = i["relation"]
-            description = i["description"]
-    print(result[0])
-    cur.execute("""SELECT st.given_name, st.family_name, grade FROM Students AS st, (SELECT student_id, grade FROM Students_To_Courses WHERE course_id IN 
-                      (SELECT course_id FROM Courses WHERE instructorID=%d) AND course_id=%d) AS stc WHERE id=%d AND stc.student_id=st.id""" % (int(instructor_id), int(course_id), int(result[0])))
-                      
-    row = cur.fetchone()
-    if row:
-      data = {
-          "name": row[0] + ' ' + row[1],
-          "grade": row[2],
-          "probability": result[1],
-          "relation": relation,
-          "description": description,
-          "picture": filename,
-          "timestamp": stringify_date(datetime.datetime.now())
-      }
-      result = firebase.database().child('log').push(data)
-      print(data)
-    else: 
-      print("No student with id exists")
+      for i in data["data"]:
+
+          if i["name"] == result[0]:
+              relation = i["relation"]
+              description = i["description"]
+      print(result[0])
+      cur.execute("""SELECT st.given_name, st.family_name, grade FROM Students AS st, (SELECT student_id, grade FROM Students_To_Courses WHERE course_id IN 
+                        (SELECT course_id FROM Courses WHERE instructorID=%d) AND course_id=%d) AS stc WHERE id=%d AND stc.student_id=st.id""" % (int(instructor_id), int(course_id), int(result[0])))
+                        
+      row = cur.fetchone()
+      data = im.fromarray(extract_face(filename))
+      data.save('static/file'+format(index)+'.png')
+
+      if row:
+        data = {
+            "name": row[0] + ' ' + row[1],
+            "grade": row[2],
+            "probability": result[1],
+            "relation": relation,
+            "description": description,
+            "picture": 'static/file'+format(index)+'.png',
+            "timestamp": stringify_date(datetime.datetime.now())
+        }
+        if (len(firebase.database().child('log').get().val()) > 5):
+          firebase.database().child('log').remove()
+          firebase.database().child('log').push(data)
+          number = 0
+        else:
+            firebase.database().child('log').push(data)
+            number = 1
+        number+=1
+        print(data)
+      else: 
+        print("No student with id exists")
+  else:
+    print("No face detected")
 
 def stringify_date(obj):
     if isinstance(obj, datetime.datetime):
