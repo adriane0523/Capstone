@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.capstonephoneapp.LogItem;
 import com.example.capstonephoneapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class LogAdapter extends ArrayAdapter<LogItem> {
             tv_probability.setText(item.getProbability() + "");
             tv_relation.setText(item.getRelation());
             tv_timestamp.setText(item.getTimestamp() + "");
+            Picasso.get().load(item.getPictureURL()).into(iv_logImage);
         }
         return v;
     }

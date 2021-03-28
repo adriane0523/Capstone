@@ -63,7 +63,7 @@ public class LogItem implements Comparable<LogItem>{
                    String relation, Date timestamp){
         this.description = description;
         this.name = name;
-        this.pictureURL = pictureURL;
+        this.pictureURL =  pictureURL;
         this.probability = probability;
         this.relation = relation;
         this.timestamp = timestamp;
