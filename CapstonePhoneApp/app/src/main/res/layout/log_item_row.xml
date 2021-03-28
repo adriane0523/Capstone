@@ -12,7 +12,8 @@
             android:id="@+id/iv_logImage"
             android:layout_width="300px"
             android:layout_height="300px"
-            android:src="@drawable/ic_action_name"/>
+            android:src="@drawable/ic_action_name"
+            android:layout_marginTop="5dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -51,11 +52,19 @@
                 android:layout_below="@+id/tv_probability"/>
 
             <TextView
+                android:text="grade"
+                android:id="@+id/tv_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_relation"
+                />
+
+            <TextView
                 android:text="Timestamp"
                 android:id="@+id/tv_timestamp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_relation"/>
+                android:layout_below="@+id/tv_grade"/>
 
         </RelativeLayout>
 

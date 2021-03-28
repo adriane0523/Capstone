@@ -42,6 +42,7 @@ public class LogAdapter extends ArrayAdapter<LogItem> {
             TextView tv_description = v.findViewById(R.id.tv_description);
             TextView tv_probability = v.findViewById(R.id.tv_probability);
             TextView tv_relation = v.findViewById(R.id.tv_relation);
+            TextView tv_grade = v.findViewById(R.id.tv_grade);
             TextView tv_timestamp = v.findViewById(R.id.tv_timestamp);
             ImageView iv_logImage = v.findViewById(R.id.iv_logImage);
 
@@ -49,6 +50,7 @@ public class LogAdapter extends ArrayAdapter<LogItem> {
             tv_description.setText(item.getDescription());
             tv_probability.setText(item.getProbability() + "");
             tv_relation.setText(item.getRelation());
+            tv_grade.setText(item.getGrade());
             tv_timestamp.setText(item.getTimestamp() + "");
             Picasso.get().load(item.getPictureURL()).into(iv_logImage);
         }

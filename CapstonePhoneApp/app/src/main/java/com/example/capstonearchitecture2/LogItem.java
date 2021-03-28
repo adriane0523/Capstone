@@ -9,6 +9,7 @@ public class LogItem implements Comparable<LogItem>{
     String pictureURL = "";
     double probability = 0.0;
     String relation = "";
+    String grade = "";
     Date timestamp = null;
 
     public String getDescription() {
@@ -18,6 +19,10 @@ public class LogItem implements Comparable<LogItem>{
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getGrade(){ return grade; }
+
+    public void setGrade(String grade){ this.grade = grade; }
 
     public String getName() {
         return name;
@@ -60,12 +65,13 @@ public class LogItem implements Comparable<LogItem>{
     }
 
     public LogItem(String description, String name, String pictureURL, double probability,
-                   String relation, Date timestamp){
+                   String relation, String grade, Date timestamp){
         this.description = description;
         this.name = name;
         this.pictureURL =  pictureURL;
         this.probability = probability;
         this.relation = relation;
+        this.grade = grade;
         this.timestamp = timestamp;
     }
 

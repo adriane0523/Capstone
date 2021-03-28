@@ -73,6 +73,7 @@ public class ConsoleLogActivity extends AppCompatActivity {
                     double probability = ds.child("probability").getValue(float.class);
                     String relation = ds.child("relation").getValue(String.class);
                     String date = ds.child("timestamp").getValue(String.class);
+                    String grade = ds.child("grade").getValue(String.class);
 
 
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -83,7 +84,7 @@ public class ConsoleLogActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
                     Log.d("DB ACCESS", "Name is " + name);
-                    LogItem logItem = new LogItem(description, name, picture, probability, relation, convertedDate);
+                    LogItem logItem = new LogItem(description, name, picture, probability, relation, grade, convertedDate);
                     logItem.pictureURL = "http://10.0.2.2:5000/"+picture;
                     log.add(logItem);
                     Collections.sort(log, Collections.<LogItem>reverseOrder());
