@@ -7,14 +7,43 @@
     <ListView
         android:id="@+id/lv_consoleLog"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/button_layout"
+        />
 
-    <Button
-        android:id="@+id/btn_startClassify"
-        android:text="Start Classification"
+    <RelativeLayout
+        android:id="@+id/button_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lv_consoleLog"/>
+        android:layout_alignParentBottom="true">
+
+        <Button
+            android:id="@+id/btn_startClassify"
+            android:text="Start Classification"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="45dp" />
+
+        <Button
+            android:layout_marginTop="-5dp"
+            android:id="@+id/btn_stopClassify"
+            android:text="Stop Classification"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/btn_startClassify"/>
+
+        <Button
+            android:layout_marginTop="-5dp"
+            android:id="@+id/btn_clearLog"
+            android:text="Clear Log"
+            android:textAllCaps="false"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_below="@+id/btn_stopClassify"/>
+
+
+    </RelativeLayout>
 
 
 </RelativeLayout>
