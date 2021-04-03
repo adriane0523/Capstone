@@ -46,20 +46,23 @@ public class ConsoleLogActivity extends AppCompatActivity {
     public static Context context;
 
     Button btn_startClassify;
+    Button btn_stopClassify;
+    Button btn_clearLog;
     ListView lv_consoleLog;
+
     private ArrayList<LogItem> log = new ArrayList<LogItem>();
+
     LogAdapter mLogAdapter;
     RequestQueue queue;
 
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_console_log);
+        initWidgets();
+
         queue = Volley.newRequestQueue(ConsoleLogActivity.this);
 
-        btn_startClassify = findViewById(R.id.btn_startClassify);
         mLogAdapter = new LogAdapter(this, R.layout.log_item_row, log);
-
-        lv_consoleLog = (ListView) findViewById(R.id.lv_consoleLog);
         lv_consoleLog.setAdapter(mLogAdapter);
         mLogAdapter.notifyDataSetChanged();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("log");
@@ -77,7 +80,6 @@ public class ConsoleLogActivity extends AppCompatActivity {
                     String relation = ds.child("relation").getValue(String.class);
                     String date = ds.child("timestamp").getValue(String.class);
                     String grade = ds.child("grade").getValue(String.class);
-
 
                     SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date convertedDate = null;
@@ -103,13 +105,12 @@ public class ConsoleLogActivity extends AppCompatActivity {
 
             }
         };
-
         databaseReference.addValueEventListener(eventListener);
 
         btn_startClassify.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("GET RESPONSE","Button pressed");
+                Log.d("onClick","Start Classifying button pressed");
                 String url ="http://10.0.2.2:5000/classify";
 
                 // Request a string response from the provided URL.
@@ -129,8 +130,32 @@ public class ConsoleLogActivity extends AppCompatActivity {
 
                 // Add the request to the RequestQueue.
                 queue.add(stringRequest);
-
             }
         });
+
+        btn_stopClassify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("onClick", "Stop Classifying button pressed");
+                // Request to endpoint goes here
+            }
+        });
+
+        btn_clearLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Clears ArrayList, updates widget
+                Log.d("onClick", "Clear Log button pressed");
+                log.clear();
+                mLogAdapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    private void initWidgets(){
+        btn_startClassify = (Button) findViewById(R.id.btn_startClassify);
+        btn_stopClassify = (Button) findViewById(R.id.btn_stopClassify);
+        btn_clearLog = (Button) findViewById(R.id.btn_clearLog);
+        lv_consoleLog = (ListView) findViewById(R.id.lv_consoleLog);
     }
 }
