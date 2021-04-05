@@ -39,6 +39,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
 
 import java.io.Console;
 import java.text.ParseException;
@@ -125,7 +128,10 @@ public class ConsoleLogFragment extends Fragment {
                     }
                     Log.d("DB ACCESS", "Name is " + name);
                     LogItem logItem = new LogItem(description, name, picture, probability, relation, grade, convertedDate);
-                    logItem.pictureURL = "http://10.0.2.2:5000/" + picture;
+                    logItem.pictureURL = "http://10.0.2.2:5000/"+picture;
+                    Picasso.get().invalidate( logItem.pictureURL);
+                    Picasso.get().load( logItem.pictureURL).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE);
+
                     log.add(logItem);
                     Collections.sort(log, Collections.<LogItem>reverseOrder());
                     mLogAdapter.notifyDataSetChanged();

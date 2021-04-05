@@ -15,6 +15,7 @@ import datetime
 import sqlite3
 import numpy as np
 from PIL import Image as im
+import random
 
 
 #pip install pycryptodome
@@ -38,7 +39,10 @@ index = 0
 def start_classification(killtime, instructor_id, course_id, filename='./photos/img.png'):
     global index
 
-
+    firebase.database().child('log').remove()
+    for file in os.listdir('static'):
+      if file.endswith('.png'):
+            os.remove('static/'+file)
     # if user does not select file, browser also
     # submit a empty part without filename
     while(time.time() < killtime + 3):   
@@ -49,11 +53,10 @@ def start_classification(killtime, instructor_id, course_id, filename='./photos/
           print("No Face detected")
       time.sleep(1)
 
-
 def classify_picture(filename, instructor_id, course_id):
   global index
 
-  index = len(firebase.database().child('log').get().val())-1
+  index = (int)(random.randint(1,1000))
   if(detect_face(filename)):
       con = sqlite3.connect(DB_PATH)
       cur = con.cursor()
@@ -87,14 +90,12 @@ def classify_picture(filename, instructor_id, course_id):
             "picture": 'static/file'+format(index)+'.png',
             "timestamp": stringify_date(datetime.datetime.now())
         }
-        if (len(firebase.database().child('log').get().val()) > 5):
+        if (firebase.database().child('log').get().val() != None and len(firebase.database().child('log').get().val()) > 3):
           firebase.database().child('log').remove()
           firebase.database().child('log').push(data)
           number = 0
         else:
             firebase.database().child('log').push(data)
-            number = 1
-        number+=1
         print(data)
       else: 
         print("No student with id exists")
