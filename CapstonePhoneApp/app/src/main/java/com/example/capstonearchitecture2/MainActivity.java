@@ -1,4 +1,5 @@
-package com.example.capstonephoneapp;
+package com.example.capstonearchitecture2;
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
+
 
     BluetoothSocket mmSocket;
     BluetoothDevice mmDevice = null;
@@ -94,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // begin classification
-                MainActivity.this.startActivity(new Intent(MainActivity.this, com.example.capstonephoneapp.SliderParent.class));
+                MainActivity.this.startActivity(new Intent(MainActivity.this, com.example.capstonearchitecture2.SliderParent.class));
             }
         });
 

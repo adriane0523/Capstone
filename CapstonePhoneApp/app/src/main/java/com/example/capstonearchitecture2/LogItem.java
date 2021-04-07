@@ -1,4 +1,5 @@
-package com.example.capstonephoneapp;
+package com.example.capstonearchitecture2;
+
 
 import java.util.Date;
 

@@ -1,4 +1,5 @@
-package com.example.capstonephoneapp;
+package com.example.capstonearchitecture2;
+
 
 import android.content.Context;
 import android.os.Bundle;
@@ -19,7 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.PagerAdapter;
+
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.volley.Request;
@@ -28,12 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.capstonearchitecture2.PreferenceManager;
-import com.example.capstonephoneapp.LogAdapter;
-import com.example.capstonephoneapp.LogItem;
-import com.example.capstonephoneapp.MainActivity;
-import com.example.capstonephoneapp.R;
-import com.google.firebase.database.ChildEventListener;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,12 +39,12 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
-import java.io.Console;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.Date;
 
 public class ConsoleLogFragment extends Fragment {
@@ -75,12 +71,13 @@ public class ConsoleLogFragment extends Fragment {
 
     public ConsoleLogFragment(){}
 
+    final String apiUrl = "http://192.168.1.127:5000/";
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_console_log);
-        initWidgets();
-        final String apiUrl = "http://192.168.1.127:5000/";
         if(getArguments() != null){
 
         }

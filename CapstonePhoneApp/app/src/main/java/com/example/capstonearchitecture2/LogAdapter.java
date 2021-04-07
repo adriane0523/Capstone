@@ -1,4 +1,4 @@
-package com.example.capstonephoneapp;
+package com.example.capstonearchitecture2;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,17 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.capstonephoneapp.LogItem;
-import com.example.capstonephoneapp.R;
+
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static com.example.capstonephoneapp.ConsoleLogActivity.context;
 
 public class LogAdapter extends ArrayAdapter<LogItem> {
+
 
     private int resourceLayout;
     private Context mContext;
