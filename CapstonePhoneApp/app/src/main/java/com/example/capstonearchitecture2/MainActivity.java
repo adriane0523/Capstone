@@ -12,13 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.capstonephoneapp.ConsoleLogActivity;
-import com.example.capstonephoneapp.R;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.UUID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -99,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // begin classification
-                MainActivity.this.startActivity(new Intent(MainActivity.this, ConsoleLogActivity.class));
+                MainActivity.this.startActivity(new Intent(MainActivity.this, com.example.capstonephoneapp.SliderParent.class));
             }
         });
 

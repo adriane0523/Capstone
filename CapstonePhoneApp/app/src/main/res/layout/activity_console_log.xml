@@ -1,49 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <ListView
-        android:id="@+id/lv_consoleLog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_layout"
-        />
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-        android:id="@+id/button_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:layout_height="match_parent">
 
-        <Button
-            android:id="@+id/btn_startClassify"
-            android:text="Start Classification"
-            android:textAllCaps="false"
+        <ListView
+            android:id="@+id/lv_consoleLog"
             android:layout_width="match_parent"
-            android:layout_height="45dp" />
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/button_layout"
+            android:layout_alignParentTop="true"/>
 
-        <Button
-            android:layout_marginTop="-5dp"
-            android:id="@+id/btn_stopClassify"
-            android:text="Stop Classification"
-            android:textAllCaps="false"
+        <RelativeLayout
+            android:id="@+id/button_layout"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@+id/btn_startClassify"/>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
 
-        <Button
-            android:layout_marginTop="-5dp"
-            android:id="@+id/btn_clearLog"
-            android:text="Clear Log"
-            android:textAllCaps="false"
-            android:layout_width="match_parent"
-            android:layout_height="45dp"
-            android:layout_below="@+id/btn_stopClassify"/>
+            <Button
+                android:id="@+id/btn_startClassify"
+                android:text="Start Classification"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="45dp" />
 
+            <Button
+                android:layout_marginTop="-5dp"
+                android:id="@+id/btn_stopClassify"
+                android:text="Stop Classification"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/btn_startClassify"/>
+
+            <Button
+                android:layout_marginTop="-5dp"
+                android:id="@+id/btn_clearLog"
+                android:text="Clear Log"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_below="@+id/btn_stopClassify"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 
-
-</RelativeLayout>
+</FrameLayout>
