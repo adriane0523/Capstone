@@ -59,6 +59,7 @@ public class ConsoleLogActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_console_log);
         initWidgets();
+        final String apiUrl = "http://192.168.1.127:5000/";
 
         queue = Volley.newRequestQueue(ConsoleLogActivity.this);
 
@@ -90,7 +91,9 @@ public class ConsoleLogActivity extends AppCompatActivity {
                     }
                     Log.d("DB ACCESS", "Name is " + name);
                     LogItem logItem = new LogItem(description, name, picture, probability, relation, grade, convertedDate);
-                    logItem.pictureURL = "http://10.0.2.2:5000/"+picture;
+                    //logItem.pictureURL = "http://10.0.2.2:5000/"+picture;
+                    logItem.pictureURL = apiUrl+picture;
+                    Log.d("GET RESPONSE",logItem.pictureURL);
                     Picasso.get().invalidate( logItem.pictureURL);
                     Picasso.get().load( logItem.pictureURL).networkPolicy(NetworkPolicy.NO_CACHE).memoryPolicy(MemoryPolicy.NO_CACHE);
 
@@ -111,8 +114,8 @@ public class ConsoleLogActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("onClick","Start Classifying button pressed");
-                String url ="http://10.0.2.2:5000/classify";
-
+                String url =apiUrl+"classify";
+                Log.d("GET RESPONSE",url);
                 // Request a string response from the provided URL.
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                         new Response.Listener<String>() {
