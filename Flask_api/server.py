@@ -123,6 +123,7 @@ def classify_from_stream():
 
 
 
-app.run(host="localhost", port=5000, debug=True, threaded=True)
+#app.run(host="localhost", port=5000, debug=True, threaded=True)
+app.run(host='0.0.0.0', port=5000, threaded=True)
 app.secret_key = 'super secret key'
 app.config['SESSION_TYPE'] = 'filesystem'
