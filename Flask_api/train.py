@@ -52,18 +52,22 @@ def extract_face(filename, required_size=(160, 160)):
 	# extract the bounding box from the first face
 	#flag = []
 	#if len(results) > 0:
+	cropped_images = []
 	print(results)
-	x1, y1, width, height = results[0]['box']
-	# bug fix
-	x1, y1 = abs(x1), abs(y1)
-	x2, y2 = x1 + width, y1 + height
-	# extract the face
-	face = pixels[y1:y2, x1:x2]
-	# resize pixels to the model size
-	image = Image.fromarray(face)
-	image = image.resize(required_size)
-	flag = asarray(image)
-	return flag
+	if len(results) > 0:
+		for i in range(0,len(results)):
+			x1, y1, width, height = results[i]['box']
+			# bug fix
+			x1, y1 = abs(x1), abs(y1)
+			x2, y2 = x1 + width, y1 + height
+			# extract the face
+			face = pixels[y1:y2, x1:x2]
+			# resize pixels to the model size
+			image = Image.fromarray(face)
+			image = image.resize(required_size)
+			flag = asarray(image)
+			cropped_images.append(flag)
+	return cropped_images
 
 
 # load images and extract faces for all images in a directory
@@ -76,8 +80,7 @@ def load_faces(directory):
 		# path
 		path = directory + filename
 		# get face
-		face = extract_face(path)
-		faces.append(face)
+		faces = extract_face(path)
 		'''
 		if 0 < len(face):
 			# store

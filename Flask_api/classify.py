@@ -17,7 +17,7 @@ def classify(file_name):
     trainX, trainy = data['arr_0'], data['arr_1']
 
     #load image you want to classify - it should be in a folder
-    x = extract_face(file_name)
+    x = extract_face(file_name)[0]
 
     #model to extract face
     model = load_model('facenet_keras.h5')

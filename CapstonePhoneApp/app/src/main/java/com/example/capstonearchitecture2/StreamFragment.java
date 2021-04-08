@@ -37,7 +37,7 @@ public class StreamFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.activity_stream, container, false);
         WebView myWebView = (WebView) view.findViewById(R.id.webview);
-        myWebView.loadUrl("http://192.168.1.127:5000/");
+        myWebView.loadUrl("http://192.168.42.66:5000/");
 
         return view;
     }

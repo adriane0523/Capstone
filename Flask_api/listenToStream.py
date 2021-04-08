@@ -55,50 +55,37 @@ def start_classification(killtime, instructor_id, course_id, filename='./photos/
 
 def classify_picture(filename, instructor_id, course_id):
   global index
-
+  con = sqlite3.connect(DB_PATH)
+  cur = con.cursor()
   index = (int)(random.randint(1,1000))
   if(detect_face(filename)):
-      con = sqlite3.connect(DB_PATH)
-      cur = con.cursor()
-      result = classify(FILE_PATH + '/img.png')
-      data = {}
-      relation = ""
-      description = ""
-      with open('data.json') as f:
-          data = json.load(f)
-
-      for i in data["data"]:
-
-          if i["name"] == result[0]:
-              relation = i["relation"]
-              description = i["description"]
-      print(result[0])
+    for face in extract_face(filename):
+      data = im.fromarray(face)
+      data.save('static/file'+format(index)+'.png')
+        
+      result = classify('static/file'+format(index)+'.png')
       cur.execute("""SELECT st.given_name, st.family_name, grade FROM Students AS st, (SELECT student_id, grade FROM Students_To_Courses WHERE course_id IN 
                         (SELECT course_id FROM Courses WHERE instructorID=%d) AND course_id=%d) AS stc WHERE id=%d AND stc.student_id=st.id""" % (int(instructor_id), int(course_id), int(result[0])))
                         
       row = cur.fetchone()
-      data = im.fromarray(extract_face(filename))
-      data.save('static/file'+format(index)+'.png')
-
+      
       if row:
         data = {
             "name": row[0] + ' ' + row[1],
             "grade": row[2],
             "probability": result[1],
-            "relation": relation,
-            "description": description,
             "picture": 'static/file'+format(index)+'.png',
             "timestamp": stringify_date(datetime.datetime.now())
         }
-        if (firebase.database().child('log').get().val() != None and len(firebase.database().child('log').get().val()) > 3):
+        if (firebase.database().child('log').get().val() != None and len(firebase.database().child('log').get().val()) > 10):
           firebase.database().child('log').remove()
           firebase.database().child('log').push(data)
-          number = 0
         else:
             firebase.database().child('log').push(data)
         print(data)
       else: 
         print("No student with id exists")
+      index +=1
   else:
     print("No face detected")
 
@@ -121,14 +108,15 @@ def listen(instructor_id=1123456780, course_id=1):
       threaded = False
     
       for chunk in r.iter_content(chunk_size=1024):
-          dropcount += 1
           byte += chunk
           a = byte.find(b'\xff\xd8')
           b = byte.find(b'\xff\xd9')
+          dropcount += 1
           if a != -1 and b != -1:
+              print(dropcount)
               jpg = byte[a:b+2]
               byte = byte[b+2:]
-              if dropcount > 1200:
+              if dropcount > 200 and dropcount < 280:
                 dropcount = 0
                 i = cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.IMREAD_COLOR)
                 print("writiting")
@@ -140,8 +128,10 @@ def listen(instructor_id=1123456780, course_id=1):
                   th.start()
                   threaded = True
           if time.time() > T_END:
-            th.join()
-            exit(0)
+            if threaded:
+              th.join()
+              exit(0)
+          
             
       
   else:
