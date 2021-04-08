@@ -83,7 +83,7 @@ def classify_picture(filename, instructor_id, course_id):
       if row:
         data = {
             "name": row[0] + ' ' + row[1],
-            "year": row[2]
+            "year": row[2],
             "grade": row[3],
             "comment": row[4],
             "probability": result[1],
