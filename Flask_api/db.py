@@ -16,7 +16,7 @@ def createAllTables(pathToDB):
   if cur.fetchone():
     throwError(500, 'Table Students Already Exists')
   else:
-    cur.execute('CREATE TABLE Students (id INTEGER(10) NOT NULL PRIMARY KEY UNIQUE, given_name VARCHAR(50), family_name VARCHAR(50))')
+    cur.execute('CREATE TABLE Students (id INTEGER(10) NOT NULL PRIMARY KEY UNIQUE, given_name VARCHAR(50), family_name VARCHAR(50), year VARCHAR(10))')
   
   cur.execute("""SELECT name FROM sqlite_master WHERE type='table' AND name='Instructors';""")
   if cur.fetchone():
@@ -34,7 +34,7 @@ def createAllTables(pathToDB):
   if cur.fetchone():
     throwError(500, 'Table Student_To_Courses Already Exists')
   else:
-    cur.execute('CREATE TABLE Students_To_Courses (student_id INTEGER NOT NULL, course_id INTEGER NOT NULL, grade VARCHAR(2), CONSTRAINT FK_StudentInCourse FOREIGN KEY (student_id) REFERENCES Students(id), CONSTRAINT FK_CourseForStudent FOREIGN KEY (course_id) REFERENCES Courses(id))')
+    cur.execute('CREATE TABLE Students_To_Courses (student_id INTEGER NOT NULL, course_id INTEGER NOT NULL, grade VARCHAR(2), comment VARCHAR(50), CONSTRAINT FK_StudentInCourse FOREIGN KEY (student_id) REFERENCES Students(id), CONSTRAINT FK_CourseForStudent FOREIGN KEY (course_id) REFERENCES Courses(id))')
   
   con.close()
 
@@ -43,16 +43,16 @@ def dbInsert(dbpath):
   cur = con.cursor()
   #INSERT STUDENTS
   cur.execute(""" DELETE FROM Students """)
-  cur.execute(""" INSERT INTO Students (id, given_name, family_name) 
+  cur.execute(""" INSERT INTO Students (id, given_name, family_name, year) 
                     VALUES
-                    (1234567890, 'Adriane', 'Inocencio'),
-                    (1234567891, 'Ben', 'Afflek'),
-                    (1234567892, 'Elton', 'John'),
-                    (1234567893, 'Jason', 'Kwon'),
-                    (1234567894, 'Jerry', 'Seinfeld'),
-                    (1234567895, 'Kyle', 'Gonzalez'),
-                    (1234567896, 'Madonna', ''),
-                    (1234567897, 'Mindy', 'Kaling');
+                    (1234567890, 'Adriane', 'Inocencio', 'Senior'),
+                    (1234567891, 'Ben', 'Afflek', 'Freshman'),
+                    (1234567892, 'Elton', 'John', 'Sophomore'),
+                    (1234567893, 'Jason', 'Kwon', 'Senior'),
+                    (1234567894, 'Jerry', 'Seinfeld', 'Junior'),
+                    (1234567895, 'Kyle', 'Gonzalez', 'Senior'),
+                    (1234567896, 'Madonna', '', 'Freshman'),
+                    (1234567897, 'Mindy', 'Kaling', 'Junior');
                   """)
   #INSERT INSTRUCTORS
   cur.execute(""" DELETE FROM Instructors """)
@@ -73,22 +73,22 @@ def dbInsert(dbpath):
 
   #INSERT COURSE TO STUDENT RELATION
   cur.execute(""" DELETE FROM Students_To_Courses """)
-  cur.execute(""" INSERT INTO Students_To_Courses (student_id, course_id, grade)
+  cur.execute(""" INSERT INTO Students_To_Courses (student_id, course_id, grade, comment)
                     VALUES
-                    (1234567890, 1, 'A+'),
-                    (1234567890, 2, 'A+'),
-                    (1234567891, 1, 'B+'),
-                    (1234567891, 2, 'C-'),
-                    (1234567892, 1, 'A0'),
-                    (1234567893, 1, 'B+'),
-                    (1234567893, 1, 'A0'),
-                    (1234567894, 1, 'B0'),
-                    (1234567894, 1, 'C+'),
-                    (1234567895, 1, 'A-'),
-                    (1234567896, 1, 'B-'),
-                    (1234567896, 1, 'B0'),
-                    (1234567897, 1, 'A+'),
-                    (1234567897, 1, 'A0')
+                    (1234567890, 1, 'A+', 'Excellent student'),
+                    (1234567890, 2, 'A+', 'Exquisite student'),
+                    (1234567891, 1, 'B+', 'Lacking Chapter 3 Knowledge'),
+                    (1234567891, 2, 'C-', 'Lacking overall'),
+                    (1234567892, 1, 'A0', 'Eagerly participates in class'),
+                    (1234567893, 1, 'B+', 'Lacking Continuity Concept understanding'),
+                    (1234567893, 1, 'A0', 'Curious Asks many questions'),
+                    (1234567894, 1, 'B0', 'Lacking Chapter 3 Knowledge'),
+                    (1234567894, 1, 'C+', 'Lacking Chapter 3 Knowledge'),
+                    (1234567895, 1, 'A+', 'Lacking Chapter 3 Knowledge'),
+                    (1234567896, 1, 'B-', 'Lacking Chapter 3 Knowledge'),
+                    (1234567896, 1, 'B0', 'Lacking Chapter 3 Knowledge'),
+                    (1234567897, 1, 'A+', 'Lacking Chapter 3 Knowledge'),
+                    (1234567897, 1, 'A0', 'Lacking Chapter 3 Knowledge')
                     """)
 
 
@@ -120,7 +120,7 @@ def dropAllTables(dbpath, tableList):
 def testQuery(dbpath):
   con = sqlite3.connect(dbpath)
   cur = con.cursor()
-  cur.execute("""SELECT st.given_name, st.family_name, grade FROM Students AS st, (SELECT student_id, grade FROM Students_To_Courses WHERE course_id IN 
+  cur.execute("""SELECT st.given_name, st.family_name, st.year, grade, comment FROM Students AS st, (SELECT student_id, grade, comment FROM Students_To_Courses WHERE course_id IN 
                       (SELECT course_id FROM Courses WHERE instructorID=1123456780) AND course_id=1) AS stc WHERE id=1234567890 AND stc.student_id=st.id""")
   print(cur.fetchall())
 def throwError(errorCode, reason):

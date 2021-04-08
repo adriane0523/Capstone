@@ -73,7 +73,7 @@ def classify_picture(filename, instructor_id, course_id):
               relation = i["relation"]
               description = i["description"]
       print(result[0])
-      cur.execute("""SELECT st.given_name, st.family_name, grade FROM Students AS st, (SELECT student_id, grade FROM Students_To_Courses WHERE course_id IN 
+      cur.execute("""SELECT st.given_name, st.family_name, st.year, grade, comment FROM Students AS st, (SELECT student_id, grade, comment FROM Students_To_Courses WHERE course_id IN 
                         (SELECT course_id FROM Courses WHERE instructorID=%d) AND course_id=%d) AS stc WHERE id=%d AND stc.student_id=st.id""" % (int(instructor_id), int(course_id), int(result[0])))
                         
       row = cur.fetchone()
@@ -83,7 +83,9 @@ def classify_picture(filename, instructor_id, course_id):
       if row:
         data = {
             "name": row[0] + ' ' + row[1],
-            "grade": row[2],
+            "year": row[2]
+            "grade": row[3],
+            "comment": row[4],
             "probability": result[1],
             "relation": relation,
             "description": description,
