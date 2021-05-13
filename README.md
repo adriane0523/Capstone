@@ -1,7 +1,16 @@
 
 <h1>ASU CSE 424 Capstone Project 2020-2021: ASU Smart Glasses</h1>
+Authors: Adriane Inocencio, Kyle Gonzalez, Jason Kwon, Nadia Jafar, Greyson Britt
 
 The Goal of this project was to construct a 3 teir face classfication pipeline for a pair of smart glasses that will have a raspberry pi camera hooked up to it. This device would be fore those with face recongition problems and instructors.
+
+CapstonePhoneApp-> Android App Repo
+Flask_Api-> Classfication/Backend server built in Python Flask
+Python_face_detection_classifcation->classfication training script
+
+Technologies Used: Machine Learning (SKLearn SVM, MTCNN, Keras), SQL, Python, Flask, Android Studios, Java, Raspberry Pi
+
+Result: 100% on the project
 
 Demo: https://youtu.be/Sp4RxzEDAwk
 
