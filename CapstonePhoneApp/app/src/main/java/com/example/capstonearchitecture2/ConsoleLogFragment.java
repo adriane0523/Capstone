@@ -71,7 +71,7 @@ public class ConsoleLogFragment extends Fragment {
 
     public ConsoleLogFragment(){}
 
-    final String apiUrl = "http://192.168.42.66:5000/";
+    final String apiUrl = "http://192.168.1.127:5000/";
 
 
 

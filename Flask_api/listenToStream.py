@@ -101,6 +101,7 @@ def stringify_date(obj):
 # 
 def listen(instructor_id=1123456780, course_id=1):
   r = requests.get('http://127.0.0.1:5000/video_feed', stream=True)
+  #r = requests.get('http://192.168.1.135:8000/stream.mjpg', stream=True)
   T_END = time.time() + 10 
   th = threading.Thread(target = start_classification, args = (T_END, instructor_id, course_id))
  

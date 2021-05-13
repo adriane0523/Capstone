@@ -52,7 +52,9 @@ def dbInsert(dbpath):
                     (1234567894, 'Jerry', 'Seinfeld', 'Junior'),
                     (1234567895, 'Kyle', 'Gonzalez', 'Senior'),
                     (1234567896, 'Madonna', '', 'Freshman'),
-                    (1234567897, 'Mindy', 'Kaling', 'Junior');
+                    (1234567897, 'Mindy', 'Kaling', 'Junior'),
+                    (1234567898, 'Greyson', 'Britt', 'Senior'),
+                    (3, 'Rajat', 'Hairy man', 'Senior');
                   """)
   #INSERT INSTRUCTORS
   cur.execute(""" DELETE FROM Instructors """)
@@ -88,7 +90,9 @@ def dbInsert(dbpath):
                     (1234567896, 1, 'B-', 'Lacking Chapter 3 Knowledge'),
                     (1234567896, 1, 'B0', 'Lacking Chapter 3 Knowledge'),
                     (1234567897, 1, 'A+', 'Lacking Chapter 3 Knowledge'),
-                    (1234567897, 1, 'A0', 'Lacking Chapter 3 Knowledge')
+                    (1234567897, 1, 'A0', 'Lacking Chapter 3 Knowledge'),
+                    (1234567898, 1, 'A0', 'Lacking Chapter 3 Knowledge'),
+                    (3, 1, 'A0', 'Lacking Chapter 3 Knowledge')
                     """)
 
 
@@ -125,6 +129,8 @@ def testQuery(dbpath):
   print(cur.fetchall())
 def throwError(errorCode, reason):
   print('Error (%d): %s' % (errorCode, reason))
+
+
 
 if __name__ == "__main__":
   dbpath = './db/database.db'
