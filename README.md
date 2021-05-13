@@ -3,7 +3,7 @@
 Authors: Adriane Inocencio, Kyle Gonzalez, Jason Kwon, Nadia Jafar, Greyson Britt
 
 <h3>Goal:</h3>
-The Goal of this project was to construct a 3 teir face classfication pipeline for a pair of smart glasses that will have a raspberry pi camera hooked up to it. This device would be fore those with face recongition problems and instructors.
+The goal of this project was to construct a 3 tier face classification pipeline for a pair of smart glasses that will have a raspberry pi camera hooked up to it. This device would be for those with face recognition problems and instructors.
 <br>
 <h3>Folders:</h3>
 <p>CapstonePhoneApp-> Android App Repo</p>
